@@ -7,12 +7,12 @@ year, and high school. Missing data is coded 0.'''
 from __future__ import division
 
 #constants
-FILE_NAME = 'Amherst75'
-total_students = 2235
+FILE_NAME = 'Caltech_local'
+total_students = 769
 
 #read text file
-def prepare_text(filename_data):
-    with open(filename_data) as file:
+def prepare_text(FILE_NAME):
+    with open(FILE_NAME) as file:
         text = file.read()
     return text
 
@@ -199,13 +199,78 @@ def count_highschool(list_students):
     all_highschool_info.append(count_highschool_100)
     return all_highschool_info
 
-student_list = create_students(prepare_text(FILE_NAME))
-print(count_status(student_list))
-print(count_gender(student_list))
-print(count_major(student_list))
-print(count_secondmm(student_list))
-print(count_housing(student_list))
-print(count_year(student_list))
-print(count_highschool(student_list))
+#student_list = create_students(prepare_text(FILE_NAME))
+#print(student_list)
+#print(count_status(student_list))
+#print(count_gender(student_list))
+#print(count_major(student_list))
+#print(count_secondmm(student_list))
+#print(count_housing(student_list))
+#print(count_year(student_list))
+#print(count_highschool(student_list))
 
+def main():
 
+    list_students = create_students(prepare_text(FILE_NAME))
+
+    count_status_list = count_status(list_students)
+    status_name = count_status_list[0]
+    status_score = count_status_list[2]
+
+    count_gender_list = count_gender(list_students)
+    gender_name = count_gender_list[0]
+    gender_score = count_gender_list[2]
+
+    count_major_list = count_major(list_students)
+    major_name = count_major_list[0]
+    major_score = count_major_list[2]
+
+    count_secondmm_list = count_secondmm(list_students)
+    secondmm_name = count_secondmm_list[0]
+    secondmm_score = count_secondmm_list[2]
+
+    count_housing_list = count_housing(list_students)
+    housing_name = count_housing_list[0]
+    housing_score = count_housing_list[2]
+
+    count_year_list = count_year(list_students)
+    year_name = count_year_list[0]
+    year_score = count_year_list[2]
+
+    count_highschool_list = count_highschool(list_students)
+    highschool_name = count_highschool_list[0]
+    highschool_score = count_highschool_list[2]
+
+    list_all_names = []
+    list_all_names.append(status_name)
+    list_all_names.append(gender_name)
+    list_all_names.append(major_name)
+    list_all_names.append(secondmm_name)
+    list_all_names.append(housing_name)
+    list_all_names.append(year_name)
+    list_all_names.append(highschool_name)
+
+    list_all_scores = []
+    list_all_scores.append(status_score)
+    list_all_scores.append(gender_score)
+    list_all_scores.append(major_score)
+    list_all_scores.append(secondmm_score)
+    list_all_scores.append(housing_score)
+    list_all_scores.append(year_score)
+    list_all_scores.append(highschool_score)
+
+    print(list_all_names)
+    print(list_all_scores)
+
+    #dict_index = 0
+    dict_status = {}
+    length = len(list_all_scores[0]) - 1
+    j = 0
+    for i in list_all_names[0]:
+        dict_status[i] = 0
+
+    #dict_status = dict.fromkeys(list_all_names[0][i], list_all_scores[0][j])
+    print(dict_status)
+
+if __name__ == '__main__':
+    main()
