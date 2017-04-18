@@ -21,7 +21,7 @@ def initialize_graph(local, A_matrix):
 
 def share_post(G, n, P, seen_so_far):
     # give a post to the node
-    # P is the likelihood that any given person will share the post
+    # P is the likelihood that any given person will share the post (percentage)
     # if a node "sees" a post, that is, one of their friends has shared the post,
     # then increment the number of people who have seen it
     # and decide if they are also going to share it
@@ -70,9 +70,9 @@ def find_influencer(G):
     return influencer
 
 def main():
+    # test on Amherst data
     sys.setrecursionlimit(1500)
     g = initialize_graph("Amherst_local.csv", "Amherst_A.txt")
-    #print(share_post(g, 31, .08, 0))
     print (find_influencer(g))
 
 if __name__ == "__main__":
