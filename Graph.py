@@ -1,3 +1,4 @@
+from queue import Queue
 import students
 import networkx as nx
 import random
@@ -22,38 +23,48 @@ def initialize_graph(local, A_matrix):
 
 # returns the number of people who see a post when it is shared initially to a node n
 # with P being the likelihood that any given person will share the post (percentage)
-# takes a really long time, will be changing to breadth-first search instead of recursion to fix the issue
+
 def share_post(G, n, P, seen_so_far):
     # give a post to the node
     # if a node "sees" a post, that is, one of their friends has shared the post,
     # then increment the number of people who have seen it
     # and decide if they are also going to share it
-
+    # if they are going to share it, add them to the queue
 
     G.node[n]['hasShared'] = True
     G.node[n]['hasSeen'] = True
 
-    # assume that all of the node's friends see the post
-    # if a node has already seen the post, don't add it to the count of people that have seen it
-    list_of_friends = G.neighbors(n)
-    for student in list_of_friends:
-        if not G.node[student]['hasSeen']:
-            seen_so_far += 1
-            G.node[student]['hasSeen'] = True
+    q = Queue()
+    q.put(n)
 
-    # take roughly P percent of the node's friends
-    select_friends = int (P * len(list_of_friends))
+    while not q.empty():
+        # dequeue the top node
+        node = q.get()
 
-    # randomly pick up to select_friends to share with
-    for i in range (select_friends):
-        r = random.randint(0, len(list_of_friends) - 1)
-        # only share if the friend has not already shared the post before
-        if not G.node[list_of_friends[r]]['hasShared']:
-            G.node[list_of_friends[r]]['hasShared'] = False
-            seen_so_far = share_post(G, list_of_friends[r], P, seen_so_far)
+        # assume that all of the node's friends see the post
+        # if a node has already seen the post, don't add it to the count of people that have seen it
+        list_of_friends = G.neighbors(node)
+        for student in list_of_friends:
+            if not G.node[student]['hasSeen']:
+                seen_so_far += 1
+                G.node[student]['hasSeen'] = True
+
+        # take roughly P percent of the node's friends
+        select_friends = int(P * len(list_of_friends))
+
+        print(".")
+        # randomly pick up to select_friends to share with and add them to the queue
+        for i in range (select_friends):
+            r = random.randint(0, len(list_of_friends) - 1)
+            # only share if the friend has not already shared the post before
+            if not G.node[list_of_friends[r]]['hasShared']:
+                G.node[list_of_friends[r]]['hasShared'] = False
+                q.put(list_of_friends[r])
+                seen_so_far += 1
+
+        q.task_done()
 
     # return the number of people that have seen the post
-    print (".")
     return seen_so_far
 
 def clear_attributes(G):
@@ -80,13 +91,14 @@ def probabilistic(G, k):
         n = find_influencer(G)
         node_list.append(n)
     count = Counter(node_list)
+    print (".")
     return count.most_common()
 
 def main():
     # test on Amherst data
     sys.setrecursionlimit(1500)
     g = initialize_graph("Amherst_local.csv", "Amherst_A.txt")
-    print (probabilistic(g, 2))
+    print (probabilistic(g, 1))
 
 if __name__ == "__main__":
     main()
