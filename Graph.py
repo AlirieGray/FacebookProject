@@ -2,6 +2,7 @@ import students
 import networkx as nx
 import random
 import sys
+from collections import Counter
 
 def initialize_graph(local, A_matrix):
     # a list of Student objects, where each Student object has a list of attribute data called info
@@ -19,12 +20,15 @@ def initialize_graph(local, A_matrix):
 
     return G
 
+# returns the number of people who see a post when it is shared initially to a node n
+# with P being the likelihood that any given person will share the post (percentage)
+# takes a really long time, will be changing to breadth-first search instead of recursion to fix the issue
 def share_post(G, n, P, seen_so_far):
     # give a post to the node
-    # P is the likelihood that any given person will share the post (percentage)
     # if a node "sees" a post, that is, one of their friends has shared the post,
     # then increment the number of people who have seen it
     # and decide if they are also going to share it
+
 
     G.node[n]['hasShared'] = True
     G.node[n]['hasSeen'] = True
@@ -69,11 +73,20 @@ def find_influencer(G):
         clear_attributes(G)
     return influencer
 
+# run the find_influencer method k times and find the node that is returned the most often
+def probabilistic(G, k):
+    node_list = []
+    for i in range(k):
+        n = find_influencer(G)
+        node_list.append(n)
+    count = Counter(node_list)
+    return count.most_common()
+
 def main():
     # test on Amherst data
     sys.setrecursionlimit(1500)
     g = initialize_graph("Amherst_local.csv", "Amherst_A.txt")
-    print (find_influencer(g))
+    print (probabilistic(g, 2))
 
 if __name__ == "__main__":
     main()
