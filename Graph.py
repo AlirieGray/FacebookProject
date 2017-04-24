@@ -31,18 +31,18 @@ def share_post(G, n, P, seen_so_far):
     # and decide if they are also going to share it
     # if they are going to share it, add them to the queue
 
-    G.node[n]['hasShared'] = True
-    G.node[n]['hasSeen'] = True
-
     q = Queue()
     q.put(n)
 
     while not q.empty():
         # dequeue the top node
         node = q.get()
+        # the current node has now both seen and shared the post
+        G.node[node]['hasShared'] = True
+        G.node[node]['hasSeen'] = True
 
         # assume that all of the node's friends see the post
-        # if a node has already seen the post, don't add it to the count of people that have seen it
+        # if a node hasn't yet seen the post, add them to the count of people that have seen it
         list_of_friends = G.neighbors(node)
         for student in list_of_friends:
             if not G.node[student]['hasSeen']:
@@ -52,7 +52,6 @@ def share_post(G, n, P, seen_so_far):
         # take roughly P percent of the node's friends
         select_friends = int(P * len(list_of_friends))
 
-        print(".")
         # randomly pick up to select_friends to share with and add them to the queue
         for i in range (select_friends):
             r = random.randint(0, len(list_of_friends) - 1)
@@ -78,6 +77,7 @@ def find_influencer(G):
     influencer = -1
     for node in G.nodes():
         influence = share_post(G, node, .10, 0)
+        print (".")
         if influence > greatest:
             greatest = influence
             influencer = node
@@ -91,7 +91,6 @@ def probabilistic(G, k):
         n = find_influencer(G)
         node_list.append(n)
     count = Counter(node_list)
-    print (".")
     return count.most_common()
 
 def main():
