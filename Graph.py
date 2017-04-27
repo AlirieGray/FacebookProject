@@ -57,9 +57,8 @@ def share_post(G, n, P, seen_so_far):
             r = random.randint(0, len(list_of_friends) - 1)
             # only share if the friend has not already shared the post before
             if not G.node[list_of_friends[r]]['hasShared']:
-                G.node[list_of_friends[r]]['hasShared'] = False
+                G.node[list_of_friends[r]]['hasShared'] = True
                 q.put(list_of_friends[r])
-                seen_so_far += 1
 
         q.task_done()
 
@@ -77,7 +76,6 @@ def find_influencer(G):
     influencer = -1
     for node in G.nodes():
         influence = share_post(G, node, .02, 0)
-        print (".")
         if influence > greatest:
             greatest = influence
             influencer = node
@@ -88,15 +86,19 @@ def find_influencer(G):
 def probabilistic(G, k):
     node_list = []
     for i in range(k):
+        print(".")
         n = find_influencer(G)
         node_list.append(n)
+        count = Counter(node_list)
+        print("most common so far", count.most_common())
     count = Counter(node_list)
     return count.most_common()
 
 def main():
     # test on Amherst data
     g = initialize_graph("Amherst_local.csv", "Amherst_A.txt")
-    print (probabilistic(g, 1))
+    print (probabilistic(g, 1000))
 
 if __name__ == "__main__":
     main()
+#1806
