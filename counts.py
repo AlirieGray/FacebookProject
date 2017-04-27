@@ -7,7 +7,11 @@ year, and high school. Missing data is coded 0.'''
 from __future__ import division
 
 #constants
+<<<<<<< HEAD
+FILE_NAME = 'UPenn7_local'
+=======
 FILE_NAME = 'Caltech_local'
+>>>>>>> 123f20d7a760243339c20b64a6058cdc44b6e437
 total_students = 769
 
 #read text file
@@ -262,6 +266,43 @@ def main():
     print(list_all_names)
     print(list_all_scores)
 
+<<<<<<< HEAD
+    dict_status = {}
+    for i in list_all_names[0]:
+        dict_status[i] = list_all_scores[0][i-1]
+    print(dict_status)
+
+    dict_gender = {}
+    for i in list_all_names[1]:
+        dict_gender[i] = list_all_scores[1].index(i)
+    print(dict_gender)
+
+    dict_major = {}
+    for i in list_all_names[2]:
+        dict_major[i] = list_all_scores[2][i-1]
+    print(dict_major)
+
+    dict_secondmm = {}
+    for i in list_all_names[3]:
+        dict_secondmm[i] = list_all_scores[3][i-1]
+    print(dict_secondmm)
+
+    dict_housing = {}
+    for i in list_all_names[4]:
+        dict_housing[i] = list_all_scores[4][i-1]
+    print(dict_housing)
+
+    dict_year = {}
+    for i in list_all_names[5]:
+        dict_year[i] = list_all_scores[5][i-1]
+    print(dict_year)
+
+    dict_highschool = {}
+    for i in list_all_names[6]:
+        dict_highschool[i] = list_all_scores[6][i-1]
+    print(dict_highschool)
+
+=======
     #dict_index = 0
     dict_status = {}
     length = len(list_all_scores[0]) - 1
@@ -271,6 +312,7 @@ def main():
 
     #dict_status = dict.fromkeys(list_all_names[0][i], list_all_scores[0][j])
     print(dict_status)
+>>>>>>> 123f20d7a760243339c20b64a6058cdc44b6e437
 
 if __name__ == '__main__':
     main()
