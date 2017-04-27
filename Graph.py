@@ -76,7 +76,7 @@ def find_influencer(G):
     greatest = 0
     influencer = -1
     for node in G.nodes():
-        influence = share_post(G, node, .10, 0)
+        influence = share_post(G, node, .02, 0)
         print (".")
         if influence > greatest:
             greatest = influence
@@ -95,7 +95,6 @@ def probabilistic(G, k):
 
 def main():
     # test on Amherst data
-    sys.setrecursionlimit(1500)
     g = initialize_graph("Amherst_local.csv", "Amherst_A.txt")
     print (probabilistic(g, 1))
 
